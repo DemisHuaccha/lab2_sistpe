@@ -22,9 +22,13 @@ fi
 # Obtener metadatos
 fecha=$(date --iso-8601=seconds)
 usuario=$(whoami)
+# Entradas: stdin (datos agregados), -o file (archivo salida)
+# Salidas: Archivo de reporte
+# Descripción: Genera un archivo con metadatos y los datos recibidos por pipe
 host=$(hostname)
 
-# Escribir metadatos al archivo
+# Escribir cabecera con metadatos al inicio del archivo de salida
+# Se usa un bloque {} para redirigir múltiples echo al mismo archivo
 {
     echo "# Fecha de generación: $fecha"
     echo "# Usuario: $usuario"

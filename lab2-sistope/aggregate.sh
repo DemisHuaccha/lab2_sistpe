@@ -7,6 +7,9 @@ declare -A max_cpu
 declare -A sum_mem
 declare -A max_mem
 
+# Entradas: stdin (líneas filtradas)
+# Salidas: stdout (Estadísticas agregadas por comando)
+# Descripción: Agrupa procesos por nombre, sumando recursos y contando ocurrencias
 # Leer línea por línea
 while read -r line; do
     # Extraer los últimos tres campos: comm, pcpu, pmem
@@ -28,12 +31,13 @@ while read -r line; do
         max_mem[$comm]=0
     fi
 
-    # Acumular métricas
+    # Acumular métricas para el comando actual
+    # Se suman CPU y memoria, y se lleva cuenta de ocurrencias para luego promediar
     ((count[$comm]++))
     sum_cpu[$comm]=$(echo "${sum_cpu[$comm]} + $pcpu" | bc)
     sum_mem[$comm]=$(echo "${sum_mem[$comm]} + $pmem" | bc)
 
-    # Actualizar máximos
+    # Actualizar máximos si el valor actual es mayor al registrado
     if (( $(echo "$pcpu > ${max_cpu[$comm]}" | bc -l) )); then
         max_cpu[$comm]=$pcpu
     fi

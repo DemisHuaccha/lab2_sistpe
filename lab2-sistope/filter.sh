@@ -3,15 +3,19 @@ cpu_min=0
 mem_min=0
 regex=".*"
 
+# Procesar argumentos de filtrado:
+# -c: uso mínimo de CPU
+# -m: uso mínimo de memoria
+# -r: expresión regular para filtrar por nombre de comando
 while getopts 'c:m:r:' OPTION; do
 	case "$OPTION" in 
 	c)
 		cpu_min="$OPTARG"
-	;;
+		;;
 
 	m)
 		mem_min="$OPTARG"
-	;;
+		;;
 
 	r)
         regex="$OPTARG"
@@ -36,6 +40,10 @@ if ! [[ "$mem_min" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
 fi
 
 
+# Entradas: stdin (líneas preprocessadas)
+# Salidas: stdout (líneas filtradas)
+# Descripción: Filtra las líneas según umbrales de CPU, Memoria y Regex de nombre
+# Procesar cada línea de entrada
 while read -r line; do
 	# Extraer campos directamente desde la linea con awk
     timestamp=$(echo "$line" | awk '{print $1}')
@@ -50,9 +58,11 @@ while read -r line; do
         continue
     fi
 
-    # Usar bc para comparaciones numericas
+    # Filtrar por CPU y Memoria usando bc para comparación de flotantes
+    # Si pasa el filtro de recursos, verificamos el nombre del comando con regex
     if (( $(echo "$pcpu >= $cpu_min" | bc) )) && (( $(echo "$pmem >= $mem_min" | bc) )); then
         if [[ $comm =~ $regex ]]; then
+            # Si cumple todas las condiciones, imprimimos la línea
             echo "$timestamp $pid $uid $comm $pcpu $pmem"
         fi
     fi

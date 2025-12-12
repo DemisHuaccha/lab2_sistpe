@@ -29,10 +29,13 @@ char **parse_command(char *str) {
     for (int i = 0; i < len; i++) {
         char c = str[i];
         if (in_quote) {
+            /* Si estamos dentro de comillas, seguimos hasta encontrar el cierre */
             if ((in_quote == 1 && c == '\'') || (in_quote == 2 && c == '"')) in_quote = 0;
             else arg[arg_pos++] = c;
         } else {
+            /* Si no estamos en comillas, verificamos separadores o inicio de comillas */
             if (isspace(c)) {
+                /* Fin de un argumento */
                 if (arg_pos > 0) {
                     arg[arg_pos] = '\0';
                     argv[argc++] = strdup(arg);
@@ -69,9 +72,11 @@ char ***parse_pipeline(char *line, int *num_commands) {
     for (int i = 0; i < len; i++) {
         char c = line[i];
         if (in_quote) {
+            /* Ignoramos pipes si estan dentro de comillas */
             if ((in_quote == 1 && c == '\'') || (in_quote == 2 && c == '"')) in_quote = 0;
             buffer[buf_pos++] = c;
         } else {
+             /* Si encontramos un pipe fuera de comillas, terminamos el comando actual */
             if (c == '|') {
                 buffer[buf_pos] = '\0';
                 commands[*num_commands] = parse_command(buffer);

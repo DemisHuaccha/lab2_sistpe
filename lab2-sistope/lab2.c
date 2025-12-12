@@ -34,17 +34,22 @@ int main(int argc, char *argv[]) {
     int pipefd[2], prev_fd = -1;
 
     for (int i = 0; i < num_commands; i++) {
+        /* Creamos un pipe para comunicar con el siguiente proceso */
         if (i < num_commands - 1) CHECK_ERROR(pipe(pipefd) == -1, "pipe");
 
         pid_t pid = fork();
         CHECK_ERROR(pid == -1, "fork");
 
         if (pid == 0) {
+            /* Proceso hijo: Configurar re-direccionamientos */
             if (prev_fd != -1) { dup2(prev_fd, STDIN_FILENO); close(prev_fd); }
             if (i < num_commands - 1) { close(pipefd[0]); dup2(pipefd[1], STDOUT_FILENO); close(pipefd[1]); }
+            
+            /* Ejecutar el comando */
             execvp(commands[i][0], commands[i]);
             perror("execvp"); exit(EXIT_FAILURE);
         } else {
+             /* Proceso padre: Cerrar descriptores y preparar para sig. iteracion */
             if (prev_fd != -1) close(prev_fd);
             if (i < num_commands - 1) { close(pipefd[1]); prev_fd = pipefd[0]; }
         }

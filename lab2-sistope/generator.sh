@@ -24,6 +24,9 @@ print_ps(){
 #getopts debe ser usado dentro de un ciclo while para que todas las opciones sean "analizadas"
 #'it' define las opciones '-i' y '-t'
 # cuando se usa ':' quiere decir que la opción requiere un argumento. --> 'i:t' --> i requiere argumento
+# Procesar opciones de línea de comandos
+# -i: intervalo de muestreo en segundos
+# -t: duración total de la ejecución en segundos
 while getopts 'i:t:' OPTION; do
 	case "$OPTION" in
 	i)
@@ -45,6 +48,9 @@ if ! [[ "$intervalo_muestreo" =~ ^[0-9]+([.][0-9]+)?$ ]] || ! [[ "$duracion_tota
     exit 1
 fi
 
+# Entradas: No tiene entradas (lee variables globales modificadas por args)
+# Salidas: stdout (formato: timestamp pid uid comm pcpu pmem)
+# Descripción: Ciclo principal que ejecuta 'ps' periódicamente hasta cumplir la duración
 # Ciclo principal de muestreo de ps
 inicio=$SECONDS
 while [ $((SECONDS - inicio)) -lt $duracion_total ]; do

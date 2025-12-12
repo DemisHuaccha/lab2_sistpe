@@ -13,6 +13,9 @@ anonimizar_uid() {
     echo -n "$1" | sha256sum | awk '{print substr($1,1,8)}'
 }
 
+# Entradas: stdin (líneas de procesos)
+# Salidas: stdout (líneas con UID anonimizado si aplica)
+# Descripción: Lee líneas y aplica anonimización de UID si se solicita
 # Procesar cada línea de entrada
 while read -r line; do
     # Extraer campos

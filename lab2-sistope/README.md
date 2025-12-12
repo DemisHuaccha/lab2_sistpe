@@ -14,32 +14,20 @@ Esto generará el ejecutable `lab2`.
 
 ## Ejecución
 
-El programa soporta tres modos de uso:
+El programa se ejecuta pasando la pipeline como argumentos de línea de comandos.
 
-### 1. Argumentos de Línea de Comandos
+### Argumentos de Línea de Comandos
 Puedes pasar la pipeline completa como un único argumento (entre comillas) al programa.
 
 ```bash
 ./lab2 "./generator.sh -i 1 -t 10 | ./preprocess.sh | ./filter.sh -c 10 -m 5 -r \"^(python|chrome)$\" | ./transform.sh --anon-uid | ./aggregate.sh | ./report.sh -o reporte.tsv"
 ```
 
-### 2. Entrada Estándar (Pipe)
-Puedes "pipear" la cadena de comandos al programa.
-
-```bash
-echo "./generator.sh -i 1 -t 10 | ./preprocess.sh | ./report.sh -o reporte.tsv" | ./lab2
-```
-O usando un archivo:
-```bash
-cat inputs.txt | ./lab2
-```
-
-### 3. Modo Interactivo
-Si ejecutas `./lab2` sin argumentos, se abrirá un prompt donde podrás ingresar la pipeline manualmente.
+Si el programa se ejecuta sin argumentos, mostrará el siguiente mensaje y terminará:
 
 ```bash
 ./lab2
-Ingrese comando: ./generator.sh -i 1 -t 5 | ./report.sh -o out.tsv
+no se recibio linea de comando a ejecutar
 ```
 
 ## Estructura del Proyecto

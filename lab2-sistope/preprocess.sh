@@ -8,6 +8,10 @@ if [[ "$1" == "--iso8601" ]]; then
 fi
 
 
+# Entradas: stdin (líneas de texto con formato de ps)
+# Salidas: stdout (formato: timestamp pid uid comm pcpu pmem)
+# Descripción: Lee líneas de stdin, valida tipos de datos y formatea la salida
+# Procesar cada línea de entrada
 while read -r line; do
     # Extraer campos directamente desde la linea con awk
     timestamp=$(echo "$line" | awk '{print $1}')
@@ -22,7 +26,8 @@ while read -r line; do
         continue
     fi
 
-    # Convertir timestamp a iso8601
+    # Convertir timestamp a ISO8601 si se activó el flag
+    # Si la conversión falla (fecha inválida), saltamos la línea
     if $convert_to_iso8601; then
         iso_ts=$(date -d "$timestamp" --iso-8601=seconds 2>/dev/null)
         if [[ -z "$iso_ts" ]]; then
