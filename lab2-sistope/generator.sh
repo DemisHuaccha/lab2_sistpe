@@ -1,5 +1,5 @@
 #!/bin/bash
-#Para empezar a crear el script, se usa el shebang
+
 
 #VALORES POR DEFECTO DE LAS OPCIONES
 intervalo_muestreo=0 #muestreo lo más rapido posible

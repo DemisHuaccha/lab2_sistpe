@@ -1,6 +1,12 @@
 #include "funciones.h"
 
 /*
+    Demis Huaccha - Rut: 21.288.793-5
+    Jose Antonio Muñoz Alvarez - 21.154.079-6
+*/ 
+
+
+/*
  * Entradas: char *str - String a limpiar
  * Salidas: void
  * Descripción: Elimina espacios en blanco al inicio y final del string

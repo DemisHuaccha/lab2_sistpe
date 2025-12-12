@@ -3,6 +3,11 @@
 #include <sys/wait.h>
 #include "funciones.h"
 
+/*
+    Demis Huaccha - Rut: 21.288.793-5
+    Jose Antonio Muñoz Alvarez - 21.154.079-6
+*/
+
 #define CHECK_ERROR(cond, msg) do { if (cond) { perror(msg); exit(EXIT_FAILURE); } } while(0)
 
 /*
@@ -49,7 +54,7 @@ int main(int argc, char *argv[]) {
             execvp(commands[i][0], commands[i]);
             perror("execvp"); exit(EXIT_FAILURE);
         } else {
-             /* Proceso padre: Cerrar descriptores y preparar para sig. iteracion */
+            /* Proceso padre: Cerrar descriptores y preparar para sig. iteracion */
             if (prev_fd != -1) close(prev_fd);
             if (i < num_commands - 1) { close(pipefd[1]); prev_fd = pipefd[0]; }
         }

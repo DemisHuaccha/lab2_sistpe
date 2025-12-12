@@ -10,7 +10,13 @@
 #define MAX_ARGS 64
 
 /*
- * Entradas: char *line - Línea de comando con pipes
+    Demis Huaccha - Rut: 21.288.793-5
+    Jose Antonio Muñoz Alvarez - 21.154.079-6
+*/
+
+
+
+/*
  *           int *num_commands - Puntero para retornar cantidad de comandos
  * Salidas: char *** - Arreglo tridimensional con comandos y argumentos
  * Descripción: Parsea una línea de comandos separada por pipes
